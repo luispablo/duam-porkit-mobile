@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+          android:id="@+id/pending_movs_count"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:minWidth="32dp"
+          android:minHeight="32dp"
+          android:background="@drawable/shape_notification"
+          android:textSize="16sp"
+          android:textColor="@android:color/white"
+          android:gravity="center"
+          android:padding="2dp"
+          android:singleLine="true">    
+</Button><!-- From: file:/home/luispablo/workspace/duam-porky-mobile2/app/src/main/res/layout/pending_update_count.xml -->

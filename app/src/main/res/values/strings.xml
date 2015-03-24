@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">DUAM Porky</string>
+    <string name="action_logout">Salir</string>
+    <string name="concepto">Concepto</string>
+    <string name="importe">Importe</string>
+    <string name="detalle">Detalle</string>
+    <string name="fecha">Fecha</string>
+    <string name="grabar">Grabar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="si">Si</string>
+    <string name="no">No</string>
+    <string name="borrar">Borrar</string>
+    <string name="editar">Editar</string>
+    <string name="usuario">Usuario</string>
+    <string name="clave">Clave</string>
+    <string name="ingresar">Ingresar</string>
+    <string name="cargar_mas_movimientos">Cargar más movimientos</string>
+    <string name="title_activity_agregar_movimiento">Agregar movimiento</string>
+    <string name="pending_update_movs">Movimientos pendientes de sincronizar</string>
+    
+    <string name="action_add">Agregar</string>
+    <string name="action_upload">Subir movimientos</string>
+    
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_balance">BalanceActivity</string>
+    <string name="action_settings">Settings</string>
+
+</resources>

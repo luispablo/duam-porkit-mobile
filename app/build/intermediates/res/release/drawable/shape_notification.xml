@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<shape 	xmlns:android="http://schemas.android.com/apk/res/android"
+		android:shape="rectangle">
+		
+	<stroke android:color="#22000000" android:width="2dp"/>
+	<corners android:radius="5dp" />
+	<solid android:color="#00DD01"/>
+	
+</shape>
+<!-- From: file:/home/luispablo/workspace/duam-porky-mobile2/app/src/main/res/drawable/shape_notification.xml -->
