@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/home/luispablo/Dropbox/workspace/duam-porky-mobile2/app/src/main/res/values/dimens.xml -->
+    <!-- From: file:/home/luispablo/Dropbox/workspace/duam-porkit-mobile/app/src/main/res/values/dimens.xml -->
     <eat-comment/>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <!-- From: file:/home/luispablo/Dropbox/workspace/duam-porky-mobile2/app/src/main/res/values/strings.xml -->
+    <!-- From: file:/home/luispablo/Dropbox/workspace/duam-porkit-mobile/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="action_add">Agregar</string>
+    <string name="action_chart">Go to home</string>
+    <string name="action_list">Ver movimientos</string>
     <string name="action_logout">Salir</string>
     <string name="action_settings">Settings</string>
     <string name="action_upload">Subir movimientos</string>
@@ -29,7 +31,7 @@
     <string name="title_activity_agregar_movimiento">Agregar movimiento</string>
     <string name="title_activity_balance">BalanceActivity</string>
     <string name="usuario">Usuario</string>
-    <!-- From: file:/home/luispablo/Dropbox/workspace/duam-porky-mobile2/app/src/main/res/values/styles.xml -->
+    <!-- From: file:/home/luispablo/Dropbox/workspace/duam-porkit-mobile/app/src/main/res/values/styles.xml -->
     <eat-comment/>
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
@@ -40,11 +42,18 @@
         -->
     </style>
     <style name="AppTheme" parent="AppBaseTheme">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:actionBarStyle">@style/PorkitActionBar</item>
+    </style>
+    <style name="AppTheme.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">#FFFFFF</item>
     </style>
     <style name="LoginFormContainer">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">16dp</item>
+    </style>
+    <style name="PorkitActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">#ff000080</item>
+        <item name="android:titleTextStyle">@style/AppTheme.ActionBar.TitleTextStyle</item>
     </style>
 </resources>

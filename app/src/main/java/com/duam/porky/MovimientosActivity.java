@@ -153,6 +153,10 @@ public class MovimientosActivity extends PorkyActivity
 				Intent intent = new Intent(this, MovimientoActivity.class);
 				startActivity(intent);
 				return true;
+            case R.id.action_chart:
+                Intent chartIntent = new Intent(MovimientosActivity.this, BalanceActivity.class);
+                startActivity(chartIntent);
+                return true;
 			case R.id.action_upload:
 				uploadMovimientos();
 				return true;

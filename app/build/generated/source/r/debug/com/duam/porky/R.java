@@ -15,19 +15,22 @@ public final class R {
         public static final int activity_vertical_margin=0x7f040001;
     }
     public static final class drawable {
-        public static final int ic_action_new=0x7f020000;
-        public static final int ic_action_refresh=0x7f020001;
-        public static final int ic_launcher=0x7f020002;
-        public static final int notification=0x7f020003;
-        public static final int shape_notification=0x7f020004;
+        public static final int ic_action_about=0x7f020000;
+        public static final int ic_action_new=0x7f020001;
+        public static final int ic_action_refresh=0x7f020002;
+        public static final int ic_action_view_as_list=0x7f020003;
+        public static final int ic_launcher=0x7f020004;
+        public static final int notification=0x7f020005;
+        public static final int shape_notification=0x7f020006;
     }
     public static final class id {
         public static final int ScrollView01=0x7f080009;
-        public static final int action_add=0x7f08001b;
-        public static final int action_logout=0x7f08001d;
-        public static final int action_settings=0x7f080019;
-        public static final int action_upload=0x7f08001c;
-        public static final int badge=0x7f08001a;
+        public static final int action_add=0x7f080019;
+        public static final int action_chart=0x7f08001c;
+        public static final int action_list=0x7f08001a;
+        public static final int action_logout=0x7f08001e;
+        public static final int action_upload=0x7f08001d;
+        public static final int badge=0x7f08001b;
         public static final int btnCancelar=0x7f08000f;
         public static final int btnCargarMovimientos=0x7f080011;
         public static final int buttonGrabarMovimiento=0x7f08000e;
@@ -68,28 +71,30 @@ public final class R {
     }
     public static final class string {
         public static final int action_add=0x7f050000;
-        public static final int action_logout=0x7f050001;
-        public static final int action_settings=0x7f050002;
-        public static final int action_upload=0x7f050003;
-        public static final int app_name=0x7f050004;
-        public static final int borrar=0x7f050005;
-        public static final int cancelar=0x7f050006;
-        public static final int cargar_mas_movimientos=0x7f050007;
-        public static final int clave=0x7f050008;
-        public static final int concepto=0x7f050009;
-        public static final int detalle=0x7f05000a;
-        public static final int editar=0x7f05000b;
-        public static final int fecha=0x7f05000c;
-        public static final int grabar=0x7f05000d;
-        public static final int hello_world=0x7f05000e;
-        public static final int importe=0x7f05000f;
-        public static final int ingresar=0x7f050010;
-        public static final int no=0x7f050011;
-        public static final int pending_update_movs=0x7f050012;
-        public static final int si=0x7f050013;
-        public static final int title_activity_agregar_movimiento=0x7f050014;
-        public static final int title_activity_balance=0x7f050015;
-        public static final int usuario=0x7f050016;
+        public static final int action_chart=0x7f050001;
+        public static final int action_list=0x7f050002;
+        public static final int action_logout=0x7f050003;
+        public static final int action_settings=0x7f050004;
+        public static final int action_upload=0x7f050005;
+        public static final int app_name=0x7f050006;
+        public static final int borrar=0x7f050007;
+        public static final int cancelar=0x7f050008;
+        public static final int cargar_mas_movimientos=0x7f050009;
+        public static final int clave=0x7f05000a;
+        public static final int concepto=0x7f05000b;
+        public static final int detalle=0x7f05000c;
+        public static final int editar=0x7f05000d;
+        public static final int fecha=0x7f05000e;
+        public static final int grabar=0x7f05000f;
+        public static final int hello_world=0x7f050010;
+        public static final int importe=0x7f050011;
+        public static final int ingresar=0x7f050012;
+        public static final int no=0x7f050013;
+        public static final int pending_update_movs=0x7f050014;
+        public static final int si=0x7f050015;
+        public static final int title_activity_agregar_movimiento=0x7f050016;
+        public static final int title_activity_balance=0x7f050017;
+        public static final int usuario=0x7f050018;
     }
     public static final class style {
         /** 
@@ -102,9 +107,9 @@ public final class R {
  API 14 theme customizations can go here. 
          */
         public static final int AppBaseTheme=0x7f060000;
-        /**  All customizations that are NOT specific to a particular API-level can go here. 
-         */
         public static final int AppTheme=0x7f060001;
-        public static final int LoginFormContainer=0x7f060002;
+        public static final int AppTheme_ActionBar_TitleTextStyle=0x7f060002;
+        public static final int LoginFormContainer=0x7f060003;
+        public static final int PorkitActionBar=0x7f060004;
     }
 }

@@ -6,6 +6,11 @@
         	android:title="@string/pending_update_movs"
         	android:showAsAction="always" />
 
+    <item   android:id="@+id/action_chart"
+            android:showAsAction="always"
+            android:icon="@drawable/ic_action_about"
+            android:title="@string/action_chart" />
+
     <item	android:id="@+id/action_add"
         	android:showAsAction="always"
         	android:icon="@drawable/ic_action_new"

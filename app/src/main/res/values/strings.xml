@@ -26,5 +26,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_balance">BalanceActivity</string>
     <string name="action_settings">Settings</string>
+    <string name="action_list">Ver movimientos</string>
+    <string name="action_chart">Go to home</string>
 
 </resources>
