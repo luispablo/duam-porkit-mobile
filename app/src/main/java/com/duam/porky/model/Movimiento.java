@@ -19,13 +19,14 @@ public class Movimiento implements Serializable
 		
 	}
 	
-	public Movimiento(long _id, long conceptoId, Date fecha, String detalle, float importe)
+	public Movimiento(long _id, long conceptoId, Date fecha, String detalle, float importe, long webServiceId)
 	{
 		this._id = _id;
 		this.conceptoId = conceptoId;
 		this.fecha = fecha;
 		this.detalle = detalle;
 		this.importe = importe;
+		this.webServiceId = webServiceId;
 	}
 	
 	public long get_id() 

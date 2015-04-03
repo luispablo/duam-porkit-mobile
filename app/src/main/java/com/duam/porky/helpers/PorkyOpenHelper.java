@@ -23,7 +23,7 @@ import com.duam.porky.model.Movimiento;
 public class PorkyOpenHelper extends SQLiteOpenHelper 
 {
 	private static final String TAG = PorkyOpenHelper.class.getName();
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 3;
 	
 	private static final String DATABASE_NAME = "duam_porky";
 	
@@ -35,6 +35,7 @@ public class PorkyOpenHelper extends SQLiteOpenHelper
 
 	public static final String MOVIMIENTOS_TABLE = "movimientos";
 	public static final String MOVIMIENTOS_COLUMN_ID = "_id";
+	public static final String MOVIMIENTOS_WEB_SERVICE_ID = "web_service_id";
 	public static final String MOVIMIENTOS_COLUMN_CONCEPTO_ID = "concepto_id";
 	public static final String MOVIMIENTOS_COLUMN_FECHA = "fecha";
 	public static final String MOVIMIENTOS_COLUMN_DETALLE = "detalle";
@@ -70,6 +71,7 @@ public class PorkyOpenHelper extends SQLiteOpenHelper
     		"CREATE TABLE "+ MOVIMIENTOS_TABLE +" ("+
     				MOVIMIENTOS_COLUMN_ID +" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL , "+
     				MOVIMIENTOS_COLUMN_CONCEPTO_ID +" INT, "+
+					MOVIMIENTOS_WEB_SERVICE_ID +" INT, "+
     				MOVIMIENTOS_COLUMN_FECHA +" DATE, "+
     				MOVIMIENTOS_COLUMN_DETALLE +" VARCHAR(500), "+
     				MOVIMIENTOS_COLUMN_IMPORTE +" FLOAT);";
@@ -88,7 +90,7 @@ public class PorkyOpenHelper extends SQLiteOpenHelper
 	}
 
 	@Override
-	public void onUpgrade(SQLiteDatabase arg0, int arg1, int arg2) 
+	public void onUpgrade(SQLiteDatabase db, int arg1, int arg2)
 	{
 	}
 	
@@ -154,7 +156,7 @@ public class PorkyOpenHelper extends SQLiteOpenHelper
 	}
 	
 	@SuppressLint("SimpleDateFormat")
-	public void addMovimiento(Date fecha, long conceptoId, String detalle, float importe)
+	public void addMovimiento(Date fecha, long conceptoId, String detalle, float importe, long webServiceId)
 	{
 		SQLiteDatabase db = this.getWritableDatabase();
 
@@ -165,6 +167,7 @@ public class PorkyOpenHelper extends SQLiteOpenHelper
 		values.put(MOVIMIENTOS_COLUMN_DETALLE, detalle);
 		values.put(MOVIMIENTOS_COLUMN_FECHA, sdf.format(fecha)); 
 		values.put(MOVIMIENTOS_COLUMN_IMPORTE, importe);
+		values.put(MOVIMIENTOS_WEB_SERVICE_ID, webServiceId);
 		
 		db.insert(MOVIMIENTOS_TABLE, null, values);
 		db.close();		
@@ -191,7 +194,7 @@ public class PorkyOpenHelper extends SQLiteOpenHelper
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor c = db.query(MOVIMIENTOS_TABLE, 
 				new String[]{MOVIMIENTOS_COLUMN_ID, MOVIMIENTOS_COLUMN_CONCEPTO_ID, MOVIMIENTOS_COLUMN_FECHA, 
-				MOVIMIENTOS_COLUMN_DETALLE, MOVIMIENTOS_COLUMN_IMPORTE}, 
+				MOVIMIENTOS_COLUMN_DETALLE, MOVIMIENTOS_COLUMN_IMPORTE, MOVIMIENTOS_WEB_SERVICE_ID},
 				MOVIMIENTOS_COLUMN_ID +" = ? ", new String[]{String.valueOf(_id)}, null,  null,  null);
 		
 		if (c.moveToFirst())
@@ -204,8 +207,9 @@ public class PorkyOpenHelper extends SQLiteOpenHelper
 				Date fecha = sdf.parse(c.getString(2));
 				String detalle = c.getString(3);
 				float importe = c.getFloat(4);
+				long webServiceId = c.getLong(5);
 				
-				return new Movimiento(_id, conceptoId, fecha, detalle, importe);
+				return new Movimiento(_id, conceptoId, fecha, detalle, importe, webServiceId);
 			} 
 			catch (ParseException e) 
 			{

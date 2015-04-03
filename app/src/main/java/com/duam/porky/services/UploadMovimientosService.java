@@ -1,5 +1,6 @@
 package com.duam.porky.services;
 
+import static com.duam.porky.ConstantesPorky.MODIFICAR_MOVIMIENTO_URI;
 import static com.duam.porky.ConstantesPorky.NUEVO_MOVIMIENTO_URI;
 import static com.duam.porky.ConstantesPorky.URL_PORKY;
 
@@ -125,21 +126,37 @@ public class UploadMovimientosService extends IntentService
 		mNotificationManager.notify(7, builder.build());
 	}
 
-	@SuppressLint("SimpleDateFormat")
-	private boolean uploadMovimiento(Movimiento m)
-	{
-		Ln.d("A subir el movimiento...");
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		
-		Ln.d("Armando el mapa con los datos del movimiento");
-		Map<String, String> data = new HashMap<String, String>();
-		data.put("fecha", sdf.format(m.getFecha()));
-		data.put("concepto_id", String.valueOf(m.getConceptoId()));
-		data.put("detalle", m.getDetalle());
-		data.put("importe", String.valueOf(m.getImporte()));
-		
-		Ln.d("Enviando el post...");
-		return HttpRequest.post(URL_PORKY + NUEVO_MOVIMIENTO_URI).form(data).ok();
+	protected boolean uploadMovimiento(Movimiento movimiento) {
+		if (movimiento.getWebServiceId() > 0) {
+			return uploadExistingMovimiento(movimiento);
+		} else {
+			return uploadNewMovimiento(movimiento);
+		}
 	}
-	
+
+	@SuppressLint("SimpleDateFormat")
+	private boolean uploadNewMovimiento(Movimiento movimiento)
+	{
+		return HttpRequest.post(URL_PORKY + NUEVO_MOVIMIENTO_URI).form(movimientData(movimiento)).ok();
+	}
+
+	protected boolean uploadExistingMovimiento(Movimiento movimiento) {
+		Map<String, String> data = movimientData(movimiento);
+		data.put("id", String.valueOf(movimiento.getWebServiceId()));
+
+		return HttpRequest.post(URL_PORKY + MODIFICAR_MOVIMIENTO_URI).form(data).ok();
+	}
+
+	protected Map<String, String> movimientData(Movimiento movimiento) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+		Map<String, String> data = new HashMap<String, String>();
+		data.put("fecha", sdf.format(movimiento.getFecha()));
+		data.put("concepto_id", String.valueOf(movimiento.getConceptoId()));
+		data.put("detalle", movimiento.getDetalle());
+		data.put("importe", String.valueOf(movimiento.getImporte()));
+
+		return data;
+	}
+
 }

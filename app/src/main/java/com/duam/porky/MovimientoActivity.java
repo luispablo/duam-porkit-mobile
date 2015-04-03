@@ -1,12 +1,5 @@
 package com.duam.porky;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
-import roboguice.inject.ContentView;
-import roboguice.inject.InjectView;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -34,7 +27,18 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.duam.porky.helpers.PorkyOpenHelper;
+import com.duam.porky.model.Concepto;
+import com.duam.porky.model.Movimiento;
 import com.duam.porky.tasks.DownloadConceptosTask;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import roboguice.inject.ContentView;
+import roboguice.inject.InjectView;
 
 @ContentView(R.layout.activity_movimiento)
 public class MovimientoActivity extends PorkyActivity 
@@ -42,8 +46,14 @@ public class MovimientoActivity extends PorkyActivity
 	private static final String TAG = MovimientoActivity.class.getName();
 	
 	private long conceptoId = -1;
-	
+	private String nombreConcepto = null;
+	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	private long webServiceId = -1;
+
 	@InjectView(R.id.editFecha) EditText editFecha;
+	@InjectView(R.id.editConcepto) EditText editConcepto;
+	@InjectView(R.id.editDetalle) EditText editDetalle;
+	@InjectView(R.id.editImporte) EditText editImporte;
 	
 	@Override
 	protected void onCreate(Bundle savedState) 
@@ -87,31 +97,30 @@ public class MovimientoActivity extends PorkyActivity
 		});
 		
 		
-		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1, null, new String[]{"nombre"}, new int[]{android.R.id.text1}, 0);		
+		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1, null, new String[]{"nombre"}, new int[]{android.R.id.text1}, 0);
 
-		AutoCompleteTextView concepto = (AutoCompleteTextView) findViewById(R.id.editConcepto);
+		final PorkyOpenHelper poh = new PorkyOpenHelper(getApplicationContext());
+
+		final AutoCompleteTextView concepto = (AutoCompleteTextView) findViewById(R.id.editConcepto);
 		concepto.setAdapter(adapter);
-		concepto.setOnItemClickListener(new OnItemClickListener() 
-		{
+		concepto.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
-			{
-				Log.d(TAG, "Almacenando el concepto con id "+ id);
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Log.d(TAG, "Almacenando el concepto con id " + id);
 				conceptoId = id;
-				
+				nombreConcepto = concepto.getText().toString();
 				updateGrabarButtonState();
 			}
 		});
-
-		final PorkyOpenHelper poh = new PorkyOpenHelper(getApplicationContext());
-		
-		adapter.setFilterQueryProvider(new FilterQueryProvider() 
+		adapter.setFilterQueryProvider(new FilterQueryProvider()
 		{			
 			@Override
 			public Cursor runQuery(CharSequence str) 
 			{
-				Log.d(TAG, "Quitando el concepto almacenado");
-				conceptoId = -1;
+				if (nombreConcepto == null || !nombreConcepto.equals(concepto.getText().toString())) {
+					conceptoId = -1;
+					nombreConcepto = null;
+				}
 				
 				if (str != null)
 				{
@@ -173,7 +182,7 @@ public class MovimientoActivity extends PorkyActivity
 			float importe = Float.parseFloat(((EditText) findViewById(R.id.editImporte)).getText().toString());
 			
 			PorkyOpenHelper poh = new PorkyOpenHelper(getApplicationContext());
-			poh.addMovimiento(fecha, conceptoId, detalle, importe);
+			poh.addMovimiento(fecha, conceptoId, detalle, importe, webServiceId);
 			
 			return true;
 		} 
@@ -221,7 +230,7 @@ public class MovimientoActivity extends PorkyActivity
 	private boolean importeValido()
 	{
 		String importe = ((EditText) findViewById(R.id.editImporte)).getText().toString();		
-		Log.d(getClass().getName(), "El importe ["+ importe +"] es valido: "+ !importe.isEmpty());
+		Log.d(getClass().getName(), "El importe [" + importe + "] es valido: " + !importe.isEmpty());
 		
 		return !importe.isEmpty();
 	}
@@ -261,20 +270,36 @@ public class MovimientoActivity extends PorkyActivity
 		
 		return fechaValida;
 	}
-	
+
+	protected void fillMovimientoValues(Movimiento movimiento) {
+		if (movimiento.getWebServiceId() > 0) {
+			PorkyOpenHelper poh = new PorkyOpenHelper(getApplicationContext());
+			Concepto concepto = poh.findConceptoById(movimiento.getConceptoId());
+
+			webServiceId = movimiento.getWebServiceId();
+			conceptoId = concepto.get_id();
+			nombreConcepto = concepto.getNombre();
+
+			editConcepto.setText(concepto.getNombre());
+			editDetalle.setText(movimiento.getDetalle());
+			editFecha.setText(sdf.format(movimiento.getFecha()));
+			editImporte.setText(String.valueOf(movimiento.getImporte()));
+		} else {
+			editFecha.setText(sdf.format(new Date()));
+		}
+	}
+
 	@SuppressLint("SimpleDateFormat")
 	@Override
 	protected void onResume() 
 	{
-		// TODO Auto-generated method stub
 		super.onResume();
 
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		EditText editFecha = (EditText) findViewById(R.id.editFecha);
-		editFecha.setText(sdf.format(new Date()));
-		
 		PorkyOpenHelper poh = new PorkyOpenHelper(getApplicationContext());
-		
+
+		Movimiento movimiento = getIntent().getExtras() != null ? (Movimiento) getIntent().getExtras().get("movimiento") : new Movimiento();
+		fillMovimientoValues(movimiento);
+
 		SharedPreferences pref = getSharedPreferences(ConstantesPorky.PORKY_PREFS, MODE_PRIVATE);
 		final long usuarioId = pref.getLong(ConstantesPorky.PREF_ID_USUARIO, -1);
 		final String nombreUsuario = pref.getString(ConstantesPorky.PREF_NOMBRE_USUARIO, "-");
@@ -332,5 +357,4 @@ public class MovimientoActivity extends PorkyActivity
 			dialog.show();
 		}
 	}
-
 }

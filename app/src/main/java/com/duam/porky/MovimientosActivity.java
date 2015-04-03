@@ -79,7 +79,11 @@ public class MovimientosActivity extends PorkyActivity
 	protected void onResume() 
 	{
 		super.onResume();
-		
+
+		if (adapter.getCount() == 0) {
+			cargarMasMovimientos();
+		}
+
 		this.cantidadMovimientos = 0;
 		uploadMovimientos();
 	}
@@ -172,9 +176,7 @@ public class MovimientosActivity extends PorkyActivity
 		private PorkyOpenHelper poh;
 		
 		@InjectView(R.id.txtFecha) TextView txtFecha;
-		@InjectView(R.id.txtEditar) TextView txtEditar;
-		@InjectView(R.id.txtBorrar) TextView txtBorrar;
-		
+
 		public MovimientoAdapter(Context context, List<Movimiento> movimientos, PorkyOpenHelper poh)
 		{
 			this.data = movimientos;
@@ -231,28 +233,13 @@ public class MovimientosActivity extends PorkyActivity
 			((TextView) vi.findViewById(R.id.txtConcepto)).setText((con != null) ? con.getNombre() : "??");
 			((TextView) vi.findViewById(R.id.txtImporte)).setText("$ "+ mov.getImporte());
 
-            txtBorrar = (TextView) vi.findViewById(R.id.txtBorrar);
-
-			txtBorrar.setOnClickListener(new View.OnClickListener() 
-			{				
+			vi.setOnClickListener(new View.OnClickListener() {
 				@Override
-				public void onClick(View v) 
-				{
-					borrarMovimiento(v, index, mov, con);
-				}
-			});
-
-            txtEditar = (TextView) vi.findViewById(R.id.txtEditar);
-
-			txtEditar.setOnClickListener(new View.OnClickListener() 
-			{				
-				@Override
-				public void onClick(View v) 
-				{
+				public void onClick(View view) {
 					editarMovimiento(mov);
 				}
 			});
-			
+
 			return vi;
 		}
 		
@@ -262,60 +249,5 @@ public class MovimientosActivity extends PorkyActivity
 			intent.putExtra("movimiento", mov);
 			startActivity(intent);
 		}
-		
-		@SuppressLint("SimpleDateFormat")
-		private void borrarMovimiento(final View vi, final int index, final Movimiento mov, Concepto con)
-		{
-			((View) vi.getParent().getParent()).setBackgroundColor(Color.RED);
-			
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-						
-			AlertDialog ad = new AlertDialog.Builder(MovimientosActivity.this).setMessage("�Borrar "+ con.getNombre() +" de "+ sdf.format(mov.getFecha()) +"?")
-					.setPositiveButton("�Si, seguro!", new DialogInterface.OnClickListener() 
-					{															
-						@Override
-						public void onClick(DialogInterface dialog, int which) 
-						{
-							((View) vi.getParent().getParent()).setBackgroundColor(Color.WHITE);
-							final ProgressDialog pd = ProgressDialog.show(MovimientosActivity.this, "Operaci�n en curso", "Borrando movimiento...");
-							
-							RemoveMovimientoTask t = new RemoveMovimientoTask()
-							{						
-								@Override
-								protected void onPostExecute(Boolean result) 
-								{
-									super.onPostExecute(result);
-									pd.dismiss();
-									
-									if (result)
-									{
-										data.remove(index);
-										MovimientoAdapter.this.notifyDataSetChanged();
-
-										Toast t = Toast.makeText(MovimientosActivity.this, "Movimiento borrado con �xito", Toast.LENGTH_LONG);
-										t.show();
-									}
-									else
-									{
-										Toast t = Toast.makeText(MovimientosActivity.this, "�No se pudo borrar!", Toast.LENGTH_LONG);
-										t.show();
-									}
-								}						
-							};
-							t.execute(mov);
-						}
-					})
-					.setNegativeButton("Nop...", new DialogInterface.OnClickListener() 
-					{															
-						@Override
-						public void onClick(DialogInterface dialog, int which) 
-						{
-							((View) vi.getParent().getParent()).setBackgroundColor(Color.WHITE);
-						}
-					}).create();
-			ad.show();
-		}
-		
 	}
-	
 }
