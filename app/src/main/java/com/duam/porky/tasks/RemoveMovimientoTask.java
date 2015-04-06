@@ -1,12 +1,8 @@
 package com.duam.porky.tasks;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.os.AsyncTask;
 
 import com.duam.porky.ConstantesPorky;
-import com.duam.porky.model.Movimiento;
 import com.github.kevinsawicki.http.HttpRequest;
 
 public class RemoveMovimientoTask extends AsyncTask<Long, Void, Boolean>
