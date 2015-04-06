@@ -26,4 +26,5 @@ dependencies {
     compile 'com.android.support:support-v4:+'
     compile 'org.roboguice:roboguice:3.+'
     compile 'com.github.kevinsawicki:http-request:6.0'
+    provided 'org.roboguice:roboblender:3.0' // por bug de roboguice
 }
