@@ -14,6 +14,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -30,6 +32,7 @@ import com.duam.porky.helpers.PorkyOpenHelper;
 import com.duam.porky.model.Concepto;
 import com.duam.porky.model.Movimiento;
 import com.duam.porky.tasks.DownloadConceptosTask;
+import com.duam.porky.tasks.RemoveMovimientoTask;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,7 +47,7 @@ import roboguice.inject.InjectView;
 public class MovimientoActivity extends PorkyActivity 
 {
 	private static final String TAG = MovimientoActivity.class.getName();
-	
+
 	private long conceptoId = -1;
 	private String nombreConcepto = null;
 	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -168,6 +171,32 @@ public class MovimientoActivity extends PorkyActivity
 				startActivity(intent);
 			}			
 		});
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu_movimiento, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId())
+		{
+			case R.id.action_delete:
+				if (webServiceId > 0) {
+					new RemoveMovimientoTask() {
+						@Override
+						protected void onPostExecute(Boolean aBoolean) {
+							Intent intent = new Intent(MovimientoActivity.this, MovimientosActivity.class);
+							startActivity(intent);
+						}
+					}.execute(webServiceId);
+				}
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
 	}
 
 	@SuppressLint("SimpleDateFormat")

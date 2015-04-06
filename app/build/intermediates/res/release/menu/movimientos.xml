@@ -1,0 +1,25 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item	android:id="@+id/badge"
+        	android:actionLayout="@layout/pending_update_count"
+        	android:icon="@drawable/shape_notification"
+        	android:title="@string/pending_update_movs"
+        	android:showAsAction="always" />
+
+    <item   android:id="@+id/action_chart"
+            android:showAsAction="always"
+            android:icon="@drawable/ic_action_about"
+            android:title="@string/action_chart" />
+
+    <item	android:id="@+id/action_add"
+        	android:showAsAction="always"
+        	android:icon="@drawable/ic_action_new"
+        	android:title="@string/action_add"/>
+
+    <item	android:id="@+id/action_upload"
+        	android:showAsAction="always"
+        	android:icon="@drawable/ic_action_refresh"
+        	android:title="@string/action_upload"/>
+
+</menu>
+<!-- From: file:/home/luispablo/Dropbox/workspace/duam-porkit-mobile/app/src/main/res/menu/movimientos.xml -->

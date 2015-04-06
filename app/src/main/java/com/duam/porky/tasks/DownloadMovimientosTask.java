@@ -1,30 +1,32 @@
 package com.duam.porky.tasks;
 
-import static com.duam.porky.ConstantesPorky.GET_MOVIMIENTOS_URI;
-import static com.duam.porky.ConstantesPorky.URL_PORKY;
+import android.annotation.SuppressLint;
+import android.os.AsyncTask;
+import android.util.Log;
+
+import com.duam.porky.ConstantesPorky;
+import com.duam.porky.model.Movimiento;
+import com.github.kevinsawicki.http.HttpRequest;
+import com.github.kevinsawicki.http.HttpRequest.HttpRequestException;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import android.annotation.SuppressLint;
-import android.os.AsyncTask;
-import android.util.Log;
-import com.duam.porky.model.Movimiento;
-import com.github.kevinsawicki.http.HttpRequest;
-import com.github.kevinsawicki.http.HttpRequest.HttpRequestException;
 
 public class DownloadMovimientosTask extends AsyncTask<String, Void, List<Movimiento>>
 {
 	private static final String TAG = DownloadMovimientosTask.class.getName();
 	
-	private String username;
+	private long idUsuario;
 	
-	public DownloadMovimientosTask(String username)
+	public DownloadMovimientosTask(long idUsuario)
 	{
-		this.username = username;
+		this.idUsuario = idUsuario;
 	}
 
 	@SuppressLint("SimpleDateFormat")
@@ -35,28 +37,29 @@ public class DownloadMovimientosTask extends AsyncTask<String, Void, List<Movimi
 		
 		String fromDate = params[0];
 		String toDate = params[1];
-		String fromRow = params[2];
-		String toRow = params[3];
+		int fromRow = Integer.parseInt(params[2]);
+		int quantity = Integer.parseInt(params[3]);
 		
-		String url = URL_PORKY + GET_MOVIMIENTOS_URI +"/"+ username +"/"+ fromDate +"/"+ toDate +"/"+ fromRow +"/"+ toRow;		
+		String url = ConstantesPorky.PorkitAPI.URL +
+						String.format(ConstantesPorky.PorkitAPI.URI_MOVIMIENTOS_LIST, idUsuario, fromDate, toDate, fromRow, quantity);
 		Log.d(TAG, "Consultando ["+ url +"]");
 		
 		try 
 		{
-			JSONArray array = new JSONArray(HttpRequest.get(url).body());
+			JSONObject response = new JSONObject(HttpRequest.get(url).body());
+			JSONArray array = response.getJSONArray("result");
 			List<Movimiento> movimientos = new ArrayList<Movimiento>();
 			
 			for (int i = 0; i < array.length(); i++)
 			{
 				JSONObject obj = array.getJSONObject(i);
-				JSONObject objConcepto = obj.getJSONObject("concepto");
 				Movimiento m = new Movimiento();
 				
-				m.setWebServiceId(obj.getLong("id"));
-				m.setConceptoId(objConcepto.getLong("id"));
-				m.setDetalle(obj.getString("detalle"));
-				m.setFecha(sdf.parse(obj.getString("fecha")));
-				m.setImporte((float) obj.getDouble("importe"));
+				m.setWebServiceId(obj.getLong("mov_id"));
+				m.setConceptoId(obj.getLong("con_id"));
+				m.setDetalle(obj.getString("mov_detalle"));
+				m.setFecha(sdf.parse(obj.getString("mov_fecha")));
+				m.setImporte((float) obj.getDouble("mov_importe"));
 				
 				movimientos.add(m);
 			}

@@ -18,4 +18,10 @@ public class ConstantesPorky
 	public static final String PORKY_PREFS = "PorkyPrefs";
 	public static final String PREF_NOMBRE_USUARIO = "nombreUsuario";
 	public static final String PREF_ID_USUARIO = "usuarioId";
+
+	public class PorkitAPI {
+		public static final String URL = "http://porkitapi.duamsistemas.com.ar/";
+		public static final String URI_MOVIMIENTOS_LIST = "movimientos/%s/%s/%s/%d/%d";
+		public static final String URI_MOVIMIENTOS_DELETE = "movimientos/%d";
+	}
 }

@@ -1,26 +1,24 @@
 package com.duam.porky.tasks;
 
-import static com.duam.porky.ConstantesPorky.BORRAR_MOVIMIENTO_URI;
-import static com.duam.porky.ConstantesPorky.URL_PORKY;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import android.os.AsyncTask;
 
+import com.duam.porky.ConstantesPorky;
 import com.duam.porky.model.Movimiento;
 import com.github.kevinsawicki.http.HttpRequest;
 
-public class RemoveMovimientoTask extends AsyncTask<Movimiento, Void, Boolean> 
+public class RemoveMovimientoTask extends AsyncTask<Long, Void, Boolean>
 {
 
 	@Override
-	protected Boolean doInBackground(Movimiento... params) 
+	protected Boolean doInBackground(Long... params)
 	{
-		Map<String, String> data = new HashMap<String, String>();
-		data.put("id", String.valueOf(params[0].get_id()));
+		String url = ConstantesPorky.PorkitAPI.URL +
+						String.format(ConstantesPorky.PorkitAPI.URI_MOVIMIENTOS_DELETE, params[0]);
 		
-		return HttpRequest.post(URL_PORKY + BORRAR_MOVIMIENTO_URI).form(data).ok();
+		return HttpRequest.delete(url).ok();
 	}
 
 }

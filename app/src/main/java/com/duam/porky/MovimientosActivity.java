@@ -1,6 +1,7 @@
 package com.duam.porky;
 
 import static com.duam.porky.ConstantesPorky.PORKY_PREFS;
+import static com.duam.porky.ConstantesPorky.PREF_ID_USUARIO;
 import static com.duam.porky.ConstantesPorky.PREF_NOMBRE_USUARIO;
 
 import java.text.SimpleDateFormat;
@@ -94,7 +95,7 @@ public class MovimientosActivity extends PorkyActivity
 		SharedPreferences prefs = getSharedPreferences(PORKY_PREFS, MODE_PRIVATE);
 		final ProgressDialog pd = new ProgressDialog(this);
 		
-		DownloadMovimientosTask task = new DownloadMovimientosTask(prefs.getString(PREF_NOMBRE_USUARIO, "-"))
+		DownloadMovimientosTask task = new DownloadMovimientosTask(prefs.getLong(PREF_ID_USUARIO, -1))
 		{
 			@Override
 			protected void onPreExecute() 

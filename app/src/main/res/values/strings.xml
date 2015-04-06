@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">DUAM Porky</string>
-    <string name="action_logout">Salir</string>
+    <string name="action_logout">Cerrar sesión</string>
     <string name="concepto">Concepto</string>
     <string name="importe">Importe</string>
     <string name="detalle">Detalle</string>
@@ -28,5 +28,6 @@
     <string name="action_settings">Settings</string>
     <string name="action_list">Ver movimientos</string>
     <string name="action_chart">Go to home</string>
+    <string name="action_delete">Borrar</string>
 
 </resources>
